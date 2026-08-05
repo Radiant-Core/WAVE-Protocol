@@ -8,7 +8,7 @@ We're excited to announce that **WAVE names** are now live and available directl
 
 ## What is WAVE?
 
-**WAVE** is a peer-to-peer naming service built natively on the Radiant blockchain. It replaces traditional DNS with a completely decentralized, blockchain-based naming system where names are secured by proof-of-work and owned by you—no registrars, no renewal fees, no centralized authorities.
+**WAVE** is a peer-to-peer naming service built natively on the Radiant blockchain. It replaces traditional DNS with a completely decentralized, blockchain-based naming system where names are secured by proof-of-work and owned by you—no registrars, no centralized authorities. Names are registered for a two-year term and renewed permissionlessly on-chain, so abandoned names return to the pool instead of being lost forever.
 
 **Think of it as the DNS of UTXO.**
 
@@ -18,7 +18,7 @@ We're excited to announce that **WAVE names** are now live and available directl
 
 - **All On-Chain** — Every name registration, update, and resolution happens directly on the Radiant blockchain. No external databases. No off-chain dependencies.
 
-- **User Owned** — Your name is a Layer-1 NFT (Claim Token) secured by your private key. True ownership, not a lease from a registrar.
+- **User Owned** — Your name is a Layer-1 NFT (Claim Token) secured by your private key. No registrar can revoke, censor, or reassign it — only the key holder controls it for the life of its term.
 
 - **Decentralized Resolution** — Names resolve by traversing a prefix tree of transactions from root to Claim Token. No DNS servers required.
 
@@ -44,13 +44,28 @@ We're excited to announce that **WAVE names** are now live and available directl
 
 ---
 
+## Name Lifecycle
+
+Names are held for a **two-year term** and renewed on-chain — permissionlessly, with no registrar in the loop:
+
+- **Registration** — a one-time, length-based fee registers the name for two years.
+- **Renewal** — any transaction that spends the name's Claim Token and pays the name's registration price to the protocol treasury extends the term. Renewing early never wastes time already paid for: the new term stacks on top of the current expiry (`max(current expiry, now) + 2 years`).
+- **Grace period** — after expiry, the owner has a **30-day grace window** in which the name still resolves and can still be renewed.
+- **Lapse** — once the grace period passes without renewal, resolution stops and the name returns to the available pool. The next registration becomes the new canonical holder.
+- **Voluntary release** — burning the Claim Token releases the name immediately, with no grace period.
+
+Renewal fees use the same length-based tiers as registration and fund continued protocol development. Term-based ownership keeps the namespace healthy: names whose keys are lost or abandoned recycle back to the community instead of being locked forever.
+
+---
+
 ## Roadmap
 
 | Status | Feature | Description |
 |--------|---------|-------------|
-| ✅ Live | Name Registration | Register names 3-63 chars (a-z, 0-9, hyphen) |
+| ✅ Live | Name Registration | Register names 3-63 chars (a-z, 0-9, hyphen) for a 2-year term |
 | ✅ Live | Address Resolution | Resolve names to Radiant addresses for payments |
 | ✅ Live | Mutable Metadata | Store arbitrary key-value records with names |
+| ✅ Live | Renewal & Expiry | On-chain renewals, 30-day grace period, lapsed names return to the pool |
 | 🔄 Planned | DNS Records | Structured support for A, MX, TXT, CNAME records |
 | 🔄 Planned | Subdomains | Hierarchical delegation (e.g., `pay.alice.rxd`) |
 | 🔄 Planned | Multi-Target | Resolve to multiple addresses or services |
